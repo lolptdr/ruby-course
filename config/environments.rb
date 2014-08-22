@@ -7,6 +7,7 @@ else
 end
 
 # TODO: ESTABLISH ACTIVE RECORD CONNECTION
+# Maker sure you are setting this to the correct database!!
 ActiveRecord::Base.establish_connection(
   :adapter => 'postgresql',
   :database => 'honkr-2_dev'

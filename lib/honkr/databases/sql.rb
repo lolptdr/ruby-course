@@ -12,6 +12,7 @@ module Honkr
       # 	ar_user = User.find(user.id)
       # 	ar_user.honks.map { |x| Honkr::Honk.new }
       # end
+      # etc. etc. etc.
 
       class Honk < ActiveRecord::Base
       	belongs_to :user
