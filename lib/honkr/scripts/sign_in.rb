@@ -16,6 +16,19 @@ module Honkr
       else
       	return {:success? => false, :error => :invalid_password}
       end
+
+      # Another way:
+      # if !user.has_password?(params[:password])
+      # 	return {success?: false, error: :invalid_password}
+      # end
+
+      # session = Honkr.db.create_session(user_id: user.id)
+
+      # {
+      # 	success?: true,
+      # 	session_id: session
+      # }
+
     end
 
   end
