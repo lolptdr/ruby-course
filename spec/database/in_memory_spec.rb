@@ -66,11 +66,13 @@ describe DoubleDog::Database::InMemory do
     expect(retrieved_item.price).to eq 5
   end
 
-  it "grabs all items" do
-    db.create_item(:name => 'fries', :price => 3)
-    db.create_item(:name => 'pickle', :price => 4)
-    db.create_item(:name => 'potato', :price => 8)
+  before do
+    @item_1 = db.create_item(:name => 'fries', :price => 3)
+    @item_2 = db.create_item(:name => 'pickle', :price => 4)
+    @item_3 = db.create_item(:name => 'potato', :price => 8)
+  end
 
+  it "grabs all items" do
     items = db.all_items
     expect(items.count).to eq 3
     expect(items.first).to be_a DoubleDog::Item
@@ -80,12 +82,9 @@ describe DoubleDog::Database::InMemory do
   end
 
   it "creates an order" do
-    item_1 = db.create_item(:name => 'fries', :price => 3)
-    item_2 = db.create_item(:name => 'pickle', :price => 4)
-    item_3 = db.create_item(:name => 'potato', :price => 8)
     emp = db.create_user(:username => 'mitch', :password => 'pass1')
 
-    order = db.create_order(:employee_id => emp.id, :items => [item_1, item_2, item_3])
+    order = db.create_order(:employee_id => emp.id, :items => [@item_1, @item_2, @item_3])
     expect(order).to be_a DoubleDog::Order
 
     expect(order.id).to_not be_nil
@@ -93,29 +92,23 @@ describe DoubleDog::Database::InMemory do
   end
 
   it "retrieves an order" do
-    item_1 = db.create_item(:name => 'fries', :price => 3)
-    item_2 = db.create_item(:name => 'pickle', :price => 4)
-    item_3 = db.create_item(:name => 'potato', :price => 8)
     emp = db.create_user(:username => 'mitch', :password => 'pass1')
 
-    order = db.create_order(:employee_id => emp.id, :items => [item_1, item_2, item_3])
+    order = db.create_order(:employee_id => emp.id, :items => [@item_1, @item_2, @item_3])
     retrieved_order = db.get_order(order.id)
     expect(retrieved_order).to be_a DoubleDog::Order
     expect(retrieved_order.employee_id).to eq(emp.id)
-    expect(retrieved_order.items).to include(item_1, item_2, item_3)
+    expect(retrieved_order.items).to include(@item_1, @item_2, @item_3)
   end
 
   it "grabs all orders" do
-    item_1 = db.create_item(:name => 'fries', :price => 3)
-    item_2 = db.create_item(:name => 'pickle', :price => 4)
-    item_3 = db.create_item(:name => 'potato', :price => 8)
     emp_1 = db.create_user(:username => 'mitch', :password => 'pass1')
     emp_2 = db.create_user(:username => 'mell', :password => 'pass2')
     emp_3 = db.create_user(:username => 'donald', :password => 'pass3')
 
-    order_1 = db.create_order(:employee_id => emp_1.id, :items => [item_1, item_2, item_3])
-    order_2 = db.create_order(:employee_id => emp_2.id, :items => [item_1, item_3])
-    order_3 = db.create_order(:employee_id => emp_3.id, :items => [item_2, item_3])
+    order_1 = db.create_order(:employee_id => emp_1.id, :items => [@item_1, @item_2, @item_3])
+    order_2 = db.create_order(:employee_id => emp_2.id, :items => [@item_1, @item_3])
+    order_3 = db.create_order(:employee_id => emp_3.id, :items => [@item_2, @item_3])
 
     orders = db.all_orders
     expect(orders.count).to eq(3)
