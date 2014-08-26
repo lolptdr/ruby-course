@@ -11,18 +11,5 @@ module DoubleDog
       return success(:user => user)
     end
 
-    def admin_session?(session_id)
-      user = DoubleDog.db.get_user_by_session_id(session_id)
-      user && user.admin?
-    end
-
-    def valid_username?(username)
-      username != nil && username.length >= 3
-    end
-
-    def valid_password?(password)
-      password != nil && password.length >= 3
-    end
-
   end
 end
