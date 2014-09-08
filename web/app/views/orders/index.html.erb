@@ -10,3 +10,49 @@
   </ul>
 </p>
 <% end %>
+
+============================================================================
+
+<h2>Create New Order</h2>
+ 
+<% if @error %>
+    <p>Error: <%= @error %> </p>
+<% end %>
+ 
+<%= form_tag orders_path, :method => :post do %>
+ 
+    <!-- Our goal is to an array of item ids -->
+    <select class="item-select" name="order[item_ids][]">
+        <% @items.each do |item| %>
+        <option value="<%= item.id %>"><%= item.name %></option>
+        <% end %>
+    </select>
+ 
+    <br />
+    <button class="add-item">Add Item</button>
+ 
+    <%= submit_tag "Create Order" %>
+<% end %>
+ 
+ 
+<script type="text/javascript">
+$('.add-item').on('click', function (e) {
+    e.preventDefault();
+    var $itemSelect = $('.item-select:last');
+    console.log("Item select", $itemSelect);
+    $itemSelect.after( $itemSelect.clone() );
+});
+</script>
+ 
+ 
+ 
+<% @orders.each do |order| %>
+<p>
+  Order #<%= order.id %>
+  <ul>
+    <% order.items.each do |item| %>
+      <li><%= item.name %></li>
+    <% end %>
+  </ul>
+</p>
+<% end %>
